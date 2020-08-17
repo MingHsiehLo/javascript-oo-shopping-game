@@ -1,22 +1,81 @@
 let gameComplete = false;
 // Define the three constants here
+const name = 'unknown';
+const score = 0;
+const items = 0;
 
 // Define the player object here
+const player = {
+    name,
+    score,
+    items,
+    getCurrentScore() {
+        return this.score;
+    },
+    addPoints(points) {
+        this.score += points;
+    },
+    deductPoints(points) {
+        this.score -= points;
+    }
+};
 
 // Define the Product class - write the Constructor function for Product class here
+function Product(id, name, price, expiryDate) {
+    this.id = id;
+    this.name = name;
+    this.price = price;
+    this.expiryDate = expiryDate;
+}
 
 // Complete the dateDiff function
-const dateDiff = (date1, date2) => {};
+const dateDiff = (date1, date2) => {
+    const firstDate = new Date(date1);
+    const secondDate = new Date(date2);
+    return parseInt((date2 - date1) / (1000 * 60 * 60 * 24), 10); 
+};
 
 // Here, use Object.defineProperty to create property - daysToExpire
+Object.defineProperty(Product(), 'daysToExpire', {
+    get() {
+        return dateDiff(this.expiryDate, new Date());
+    }
+})
 
 // Add method getDetails to Product here
+Object.defineProperty(Product(), 'getDetails', {
+    value: function(){
+        return `Product Name: ${this.name} , Product Price: ${this.price}`;
+    }
+})
 
 // Define the MagicProduct class here
-
+function MagicProduct(id, name, price, expiryDate, points, isBonus) {
+    Product().call(this, id, name, price, expiryDate);
+    this.points = points;
+    this.isBonus = isBonus;
+}
 // Establish inheritance between Product() & MagicProduct() here
+MagicProduct.prototype = Object.create(Product());
 
 // Define Rating class here
+class Rating {
+    constructor(rate = '') {
+
+    }
+    
+    set rating(value) {
+        if (value > 1 && value <= 4) {
+            this.rate = 'OK';
+        } else if (value >= 5 && value <= 7) {
+            this.rate = 'GOOD';
+        } else if (value > 7) {
+            this.rate = 'EXCEPTIONAL';
+        } else {
+            this.rate = 'BAD';
+        }
+    }
+}
 
 // Complete the loadProducts function
 const loadProducts = (map, prodId) => {
